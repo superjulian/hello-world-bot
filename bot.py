@@ -1,5 +1,5 @@
 import tweepy # for tweeting
-import secrets # shhhh
+from secrets import *# shhhh
 from book_manager import BookManager # for getting sentences out of our book file
 
 def get_next_chunk():
@@ -18,12 +18,13 @@ def get_next_chunk():
   return chunk
 
 def tweet(message):
-  auth = tweepy.OAuthHandler(secrets.consumer_key, secrets.consumer_secret)
-  auth.set_access_token(secrets.access_token, secrets.access_token_secret)
-  api = tweepy.API(auth)
-  auth.secure = True
-  print("Posting message {}".format(message))
-  api.update_status(status=message)
+    for secret in secrets:
+      auth = tweepy.OAuthHandler(secret.consumer_key, secret.consumer_secret)
+      auth.set_access_token(secret.access_token, secret.access_token_secret)
+      api = tweepy.API(auth)
+      auth.secure = True
+      print("Posting message {}".format(message))
+      api.update_status(status=message)
 
 if __name__ == '__main__':
   tweet(get_next_chunk())
